@@ -21,7 +21,7 @@ class SimpleTSVDialect(csv.Dialect):
 
 @bot.command(name='dumpusers')
 async def dumpusers(ctx):
-    """Prepare a CSV file containing, for each user in the current server, the following fields: Server Name, Discord Name, User ID, Join Date"""
+    """Prepare a CSV file containing, for each user in the current server, the following fields: Server Name, Discord Name, Discord Name Discriminator, User ID, Join Date"""
     try:
         guild = ctx.guild
         management_roles = [role
@@ -39,14 +39,14 @@ async def dumpusers(ctx):
             output_bin = io.BytesIO()
             output = io.TextIOWrapper(output_bin)
             writer = csv.writer(output, SimpleTSVDialect())
-            writer.writerow(('nick', 'name', 'id', 'joinDate'))
-            print(guild.members)
+            writer.writerow(('nick', 'name', 'discriminator', 'id', 'joinDate'))
             for member in guild.members:
                 nick = member.display_name
                 name = member.name
+                discriminator = member.discriminator
                 user_id = member.id
                 join_date = member.joined_at.strftime('%Y-%m-%d')
-                writer.writerow((nick, name, user_id, join_date))
+                writer.writerow((nick, name, discriminator, user_id, join_date))
         output.flush()
         output_bin.seek(0)
         f = discord.File(output_bin, filename="dump.csv")
