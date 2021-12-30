@@ -7,7 +7,9 @@ from discord.ext import commands
 
 TOKEN = os.getenv('DISCORD_TOKEN')
 
-bot = commands.Bot(command_prefix='%')
+intents = discord.Intents.default()
+intents.members = True
+bot = commands.Bot(command_prefix='%', intents=intents)
 
 class SimpleTSVDialect(csv.Dialect):
     def __init__(self):
@@ -38,6 +40,7 @@ async def dumpusers(ctx):
             output = io.TextIOWrapper(output_bin)
             writer = csv.writer(output, SimpleTSVDialect())
             writer.writerow(('nick', 'name', 'id', 'joinDate'))
+            print(guild.members)
             for member in guild.members:
                 nick = member.display_name
                 name = member.name
