@@ -26,9 +26,9 @@ async def dumpusers(ctx):
         guild = ctx.guild
         management_roles = [role
                             for role in guild.roles
-                            if role.name == "Management"]
+                            if role.name == "Manager"]
         if not management_roles:
-            await ctx.send("No role named 'Management' in this server.")
+            await ctx.send("No role named 'Manager' in this server.")
             return
         management = management_roles[0]
         if not any(role >= management for role in ctx.author.roles):
